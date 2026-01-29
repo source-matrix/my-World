@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>MaTrX - عالم ماتركس</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>MaTrX - عالم الإبداع</title>
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Orbitron:wght@400;700;900&family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -16,218 +16,419 @@
             width: 100%;
             height: 100%;
             overflow-x: hidden;
-            font-family: 'Tajawal', sans-serif;
-            background: #000;
+            font-family: 'Cairo', sans-serif;
         }
 
-        /* Video Background */
-        .video-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            border: 3px solid rgba(255, 215, 0, 0.5);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
-        }
-
-        .video-bg video {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            min-width: 100%;
-            min-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: cover;
-        }
-
-        .video-overlay {
+        /* شاشة الدخول */
+        .intro-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.15);
-            z-index: 0;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 50%, #0a0a0a 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        .intro-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
             pointer-events: none;
         }
 
-        /* Main Container */
-        .container {
-            position: relative;
-            z-index: 1;
-            min-height: 100vh;
-            padding: 20px;
-        }
-        
-        /* Sound Control Button */
-        .sound-control {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 215, 0, 0.5);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-        .sound-control:hover {
-            background: rgba(0, 0, 0, 0.7);
-            border-color: #FFD700;
-            transform: scale(1.1);
-        }
-        .sound-control svg {
-            width: 22px;
-            height: 22px;
-            fill: #FFD700;
-        }
-        #sound-off-icon {
-            display: none;
-        }
-
-        /* Hero Section */
-        .hero {
+        .intro-content {
             text-align: center;
-            padding: 60px 20px 40px;
-            animation: fadeInDown 1s ease-out;
+            animation: float 3s ease-in-out infinite;
         }
 
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-50px); }
-            to { opacity: 1; transform: translateY(0); }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
         }
 
-        .logo {
+        .intro-logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3rem, 12vw, 6rem);
+            font-size: 4rem;
             font-weight: 900;
-            background: linear-gradient(135deg, #ff0000, #ff4444, #ff0066, #ff0000);
+            background: linear-gradient(45deg, #ff0000, #ff4444, #ffffff, #ff4444, #ff0000);
             background-size: 300% 300%;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            animation: gradientShift 3s ease infinite;
-            text-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
-            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.6));
-            margin-bottom: 20px;
+            animation: gradientMove 3s ease infinite;
+            text-shadow: 0 0 30px rgba(255,0,0,0.5);
+            margin-bottom: 50px;
         }
 
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* Social Icons Container */
-        .social-links {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 25px;
-            margin-top: 20px;
+        .enter-btn {
+            padding: 20px 60px;
+            font-size: 1.5rem;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            color: #fff;
+            background: linear-gradient(135deg, rgba(255,0,0,0.8), rgba(180,0,0,0.9));
+            border: 3px solid #ff4444;
+            border-radius: 15px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(255,0,0,0.5), inset 0 0 20px rgba(255,255,255,0.1);
         }
 
-        .social-link {
-            display: inline-block;
-            text-decoration: none;
-            animation: float 3s ease-in-out infinite;
-        }
-        
-        .social-link:nth-child(2) {
-            animation-delay: 0.3s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-10px) rotate(5deg); }
-            50% { transform: translateY(0) rotate(0deg); }
-            75% { transform: translateY(-5px) rotate(-5deg); }
+        .enter-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg);
+            animation: btnShine 2s infinite;
         }
 
-        .social-icon {
-            width: 70px;
-            height: 70px;
+        @keyframes btnShine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .enter-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(255,0,0,0.8), inset 0 0 30px rgba(255,255,255,0.2);
+            border-color: #fff;
+        }
+
+        /* الموقع الرئيسي */
+        .main-site {
+            display: none;
+            min-height: 100vh;
             position: relative;
         }
 
-        .social-icon svg {
+        .main-site.active {
+            display: block;
+        }
+
+        /* خلفية الفيديو */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
-            animation: pulse 2s ease-in-out infinite, sparkle 1.5s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        @keyframes sparkle {
-            0%, 100% { filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8)); }
-            50% { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 1)) drop-shadow(0 0 35px rgba(255, 200, 0, 0.6)); }
-        }
-
-        /* Music Player */
-        .music-section {
-            max-width: 400px;
-            margin: 30px auto;
-            animation: fadeInUp 1s ease-out 0.3s both;
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .music-player {
-            background: rgba(0, 0, 0, 0.3);
-            border: 2px solid rgba(255, 215, 0, 0.4);
-            border-radius: 15px;
-            padding: 15px 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .music-player:hover {
-            border-color: rgba(255, 215, 0, 0.7);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.3);
-        }
-
-        .music-player.playing {
-            border-color: rgba(255, 0, 0, 0.7);
-            box-shadow: 0 0 30px rgba(255, 0, 0, 0.4);
-        }
-
-        .album-art {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
+            z-index: -1;
             overflow: hidden;
-            flex-shrink: 0;
-            border: 2px solid rgba(255, 215, 0, 0.5);
         }
 
-        .album-art img {
+        .video-background video {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .music-player.playing .album-art img {
-            animation: spin 4s linear infinite;
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.15);
+            pointer-events: none;
+        }
+
+        /* زر الصوت */
+        .sound-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.6);
+            border: 2px solid rgba(255,215,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .sound-toggle:hover {
+            background: rgba(255,0,0,0.3);
+            border-color: #ffd700;
+            transform: scale(1.1);
+        }
+
+        .sound-toggle svg {
+            width: 24px;
+            height: 24px;
+            fill: #ffd700;
+        }
+
+        /* قسم الغلاف */
+        .cover-section {
+            width: 100%;
+            position: relative;
+        }
+
+        .cover-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-bottom: 4px solid rgba(255,215,0,0.5);
+        }
+
+        @media (max-width: 768px) {
+            .cover-image {
+                height: 200px;
+            }
+        }
+
+        /* قسم البروفايل */
+        .profile-section {
+            display: flex;
+            align-items: flex-start;
+            padding: 0 30px;
+            margin-top: -60px;
+            position: relative;
+            z-index: 10;
+            flex-wrap: wrap;
+        }
+
+        .profile-image-container {
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid #000;
+            object-fit: cover;
+            box-shadow: 0 0 30px rgba(255,0,0,0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.05);
+        }
+
+        .welcome-message {
+            margin-right: 30px;
+            margin-top: 70px;
+            max-width: 600px;
+        }
+
+        .welcome-message h2 {
+            font-size: 1.8rem;
+            color: #fff;
+            margin-bottom: 15px;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+            text-shadow: 0 0 20px rgba(255,0,0,0.5);
+        }
+
+        .welcome-message p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.9);
+            line-height: 1.8;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        .welcome-message p:nth-child(2) { animation-delay: 0.3s; }
+        .welcome-message p:nth-child(3) { animation-delay: 0.6s; }
+        .welcome-message p:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-section {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 0 15px;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+            }
+
+            .welcome-message {
+                margin-right: 0;
+                margin-top: 20px;
+            }
+
+            .welcome-message h2 {
+                font-size: 1.4rem;
+            }
+
+            .welcome-message p {
+                font-size: 1rem;
+            }
+        }
+
+        /* قسم الهيدر */
+        .hero-section {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .main-logo {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #ff0000, #ff4444, #ffffff, #ff4444, #ff0000);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientMove 3s ease infinite, pulse3D 2s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(255,0,0,0.7));
+            position: relative;
+        }
+
+        @keyframes pulse3D {
+            0%, 100% { transform: perspective(500px) rotateX(0deg); }
+            50% { transform: perspective(500px) rotateX(5deg); }
+        }
+
+        /* أيقونات التواصل */
+        .social-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .social-icon {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-decoration: none;
+            position: relative;
+            animation: iconFloat 3s ease-in-out infinite;
+            transform-style: preserve-3d;
+        }
+
+        .social-icon:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0) rotateY(0deg); }
+            25% { transform: translateY(-10px) rotateY(10deg); }
+            50% { transform: translateY(0) rotateY(0deg); }
+            75% { transform: translateY(-5px) rotateY(-10deg); }
+        }
+
+        .social-icon svg {
+            width: 50px;
+            height: 50px;
+            transition: all 0.3s ease;
+            filter: drop-shadow(0 0 15px rgba(255,215,0,0.6));
+        }
+
+        .social-icon:hover svg {
+            transform: scale(1.2) rotateY(180deg);
+            filter: drop-shadow(0 0 25px rgba(255,215,0,1));
+        }
+
+        @media (max-width: 768px) {
+            .main-logo {
+                font-size: 2.5rem;
+            }
+
+            .logo-container {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .social-icons {
+                justify-content: center;
+            }
+
+            .social-icon {
+                width: 50px;
+                height: 50px;
+            }
+
+            .social-icon svg {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        /* مشغل الصوت */
+        .music-player {
+            max-width: 400px;
+            margin: 30px auto;
+            padding: 15px 20px;
+            background: rgba(0,0,0,0.7);
+            border-radius: 15px;
+            border: 2px solid rgba(255,215,0,0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .player-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .album-art-container {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            flex-shrink: 0;
+        }
+
+        .album-art {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid rgba(255,215,0,0.5);
+        }
+
+        .album-art.playing {
+            animation: spin 8s linear infinite;
+        }
+
+        .album-art.paused {
+            animation-play-state: paused;
         }
 
         @keyframes spin {
@@ -235,322 +436,663 @@
             to { transform: rotate(360deg); }
         }
 
-        .player-content {
+        .song-details {
             flex: 1;
-            min-width: 0;
         }
 
         .song-title {
             color: #fff;
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 8px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .song-artist {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
         }
 
         .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 10px;
-        }
-
-        .time {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 11px;
-            min-width: 35px;
+            margin-bottom: 15px;
         }
 
         .progress-bar {
-            flex: 1;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 2px;
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
             cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #ff0000, #ff4444);
-            border-radius: 2px;
+            background: linear-gradient(90deg, #ff0000, #ffd700);
+            border-radius: 3px;
             width: 0%;
+            transition: width 0.1s linear;
         }
 
-        .controls {
+        .time-display {
+            display: flex;
+            justify-content: space-between;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.75rem;
+            margin-top: 5px;
+        }
+
+        .player-controls {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .control-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
             background: transparent;
-            border: none;
-            color: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(255,215,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
             cursor: pointer;
-            padding: 5px;
             transition: all 0.3s ease;
         }
 
         .control-btn:hover {
-            color: #ff0000;
-            transform: scale(1.2);
+            background: rgba(255,0,0,0.3);
+            border-color: #ffd700;
+            transform: scale(1.1);
         }
 
         .control-btn svg {
             width: 20px;
             height: 20px;
+            fill: #ffd700;
+        }
+
+        .play-btn {
+            width: 55px;
+            height: 55px;
+            background: linear-gradient(135deg, rgba(255,0,0,0.6), rgba(180,0,0,0.8));
         }
 
         .play-btn svg {
-            width: 28px;
-            height: 28px;
+            width: 24px;
+            height: 24px;
         }
 
-        /* Bots Section */
+        /* قسم البوتات */
         .bots-section {
-            max-width: 600px;
-            margin: 40px auto;
-            padding: 25px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 2px solid rgba(255, 215, 0, 0.3);
-            border-radius: 20px;
-            backdrop-filter: blur(5px);
-            animation: fadeInUp 1s ease-out 0.6s both;
+            padding: 40px 20px;
         }
 
         .section-title {
             text-align: center;
-            font-size: clamp(1.5rem, 5vw, 2rem);
+            font-size: 2rem;
             color: #fff;
-            margin-bottom: 25px;
-            font-weight: 900;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            margin-bottom: 40px;
+            text-shadow: 0 0 20px rgba(255,0,0,0.5);
+            font-weight: 700;
         }
 
         .bots-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
-        .bot-btn {
+        .bot-card {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 14px 18px;
+            gap: 15px;
+            padding: 20px;
             background: transparent;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 12px;
-            color: #fff;
+            border: 2px solid rgba(255,215,0,0.3);
+            border-radius: 15px;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 700;
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
         }
 
-        .bot-btn::before {
+        .bot-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255,215,0,0.1), transparent);
             transition: left 0.5s ease;
         }
 
-        .bot-btn:hover {
-            border-color: rgba(255, 215, 0, 0.8);
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.2);
-        }
-
-        .bot-btn:hover::before {
+        .bot-card:hover::before {
             left: 100%;
         }
 
+        .bot-card:hover {
+            border-color: #ffd700;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(255,0,0,0.3), 0 0 20px rgba(255,215,0,0.2);
+        }
+
         .bot-icon {
-            width: 28px;
-            height: 28px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             flex-shrink: 0;
+            animation: iconBounce 2s ease-in-out infinite;
+        }
+
+        @keyframes iconBounce {
+            0%, 100% { transform: translateY(0) rotateZ(0deg); }
+            50% { transform: translateY(-5px) rotateZ(5deg); }
         }
 
         .bot-icon svg {
-            width: 100%;
-            height: 100%;
-            fill: url(#goldGradient);
-            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 0 10px rgba(255,215,0,0.5));
+        }
+
+        .bot-info {
+            flex: 1;
         }
 
         .bot-name {
-            flex: 1;
-            text-align: right;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .social-icon { width: 55px; height: 55px; }
-            .bots-grid { grid-template-columns: 1fr; }
+        .bot-desc {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
         }
 
-        @media (max-width: 480px) {
-            .music-player { flex-direction: column; text-align: center; }
+        .bot-telegram {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: telegramPulse 2s ease-in-out infinite;
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.3); }
-        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ff0000, #ff4444); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #ff4444, #ff0000); }
+        @keyframes telegramPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; }
+        }
+
+        .bot-telegram svg {
+            width: 25px;
+            height: 25px;
+            fill: url(#goldGradient);
+            filter: drop-shadow(0 0 8px rgba(255,215,0,0.6));
+        }
+
+        /* التذييل */
+        .footer {
+            padding: 30px;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+            border-top: 1px solid rgba(255,215,0,0.2);
+            margin-top: 40px;
+        }
+
+        .footer-text {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        /* SVG Gradients */
+        .svg-defs {
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
     </style>
 </head>
 <body>
     <!-- SVG Definitions -->
-    <svg style="position: absolute; width: 0; height: 0;">
+    <svg class="svg-defs">
         <defs>
             <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" style="stop-color:#FFD700"/>
-                <stop offset="50%" style="stop-color:#FFA500"/>
-                <stop offset="100%" style="stop-color:#FFD700"/>
+                <stop offset="0%" style="stop-color:#ffd700"/>
+                <stop offset="50%" style="stop-color:#ffec8b"/>
+                <stop offset="100%" style="stop-color:#ffd700"/>
+            </linearGradient>
+            <linearGradient id="redGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#ff0000"/>
+                <stop offset="50%" style="stop-color:#ff4444"/>
+                <stop offset="100%" style="stop-color:#ff0000"/>
             </linearGradient>
         </defs>
-        <symbol id="icon-sound-on" viewBox="0 0 24 24">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"></path>
-        </symbol>
-        <symbol id="icon-sound-off" viewBox="0 0 24 24">
-            <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"></path>
-        </symbol>
     </svg>
 
-    <!-- Sound Control Button -->
-    <div id="sound-control-btn" class="sound-control" title="كتم/تشغيل الصوت">
-        <svg id="sound-on-icon"><use xlink:href="#icon-sound-on"></use></svg>
-        <svg id="sound-off-icon"><use xlink:href="#icon-sound-off"></use></svg>
+    <!-- شاشة الدخول -->
+    <div class="intro-screen" id="introScreen">
+        <div class="intro-content">
+            <div class="intro-logo">MaTrX</div>
+            <button class="enter-btn" onclick="enterSite()">الدخول للموقع</button>
+        </div>
     </div>
 
-    <!-- Video Background -->
-    <div class="video-bg">
-        <video id="bgVideo" autoplay loop muted playsinline>
-            <source src="https://i.top4top.io/m_3680xfpyt1.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    <div class="video-overlay"></div>
+    <!-- الموقع الرئيسي -->
+    <div class="main-site" id="mainSite">
+        <!-- خلفية الفيديو -->
+        <div class="video-background">
+            <video id="bgVideo" autoplay loop playsinline>
+                <source src="https://i.top4top.io/m_3680xfpyt1.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay"></div>
+        </div>
 
-    <!-- Main Container -->
-    <div class="container">
-        <!-- Hero Section -->
-        <section class="hero">
-            <h1 class="logo">MaTrX</h1>
-            <div class="social-links">
-                <a href="https://t.me/ssfe2" target="_blank" class="social-link">
-                    <div class="social-icon">
-                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
-                    </div>
-                </a>
-                <a href="https://www.instagram.com/the.sszs" target="_blank" class="social-link">
-                    <div class="social-icon">
-                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919C8.416 2.175 8.796 2.163 12 2.163m0-2.163C8.74 0 8.333.012 7.053.072 2.695.272.273 2.69.073 7.052.012 8.333 0 8.74 0 12s.012 3.667.072 4.947c.2 4.358 2.618 6.78 6.98 6.98C8.333 23.988 8.74 24 12 24s3.667-.012 4.947-.072c4.354-.2 6.782-2.618 6.979-6.98.06-1.28.072-1.687.072-4.947s-.012-3.667-.072-4.947c-.196-4.354-2.617-6.78-6.979-6.98C15.667.012 15.26 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.88 1.44 1.44 0 000-2.88z"/></svg>
-                    </div>
-                </a>
+        <!-- زر الصوت -->
+        <div class="sound-toggle" id="soundToggle" onclick="toggleVideoSound()">
+            <svg id="soundOn" viewBox="0 0 24 24">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            <svg id="soundOff" style="display:none" viewBox="0 0 24 24">
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+            </svg>
+        </div>
+
+        <!-- صورة الغلاف -->
+        <div class="cover-section">
+            <img src="https://j.top4top.io/p_3680x8bfk1.jpg" alt="Cover" class="cover-image">
+        </div>
+
+        <!-- قسم البروفايل -->
+        <div class="profile-section">
+            <div class="profile-image-container">
+                <img src="https://a.top4top.io/p_3680d7agf1.jpg" alt="Profile" class="profile-image">
             </div>
-        </section>
+            <div class="welcome-message">
+                <h2>مرحبا بك في عالم ماتركس</h2>
+                <p>هنا تبدأ الأفكار، وتتحول التقنيات إلى واقع.</p>
+                <p>ماتركس ليس موقعا عاديا، بل مساحة لصناعة الإبداع والتميز</p>
+            </div>
+        </div>
 
-        <!-- Music Player -->
-        <section class="music-section">
-            <div class="music-player" id="musicPlayer">
-                <div class="album-art">
-                    <img src="https://b.top4top.io/p_3680guuby1.jpg" alt="Album Art">
+        <!-- قسم الهيدر -->
+        <div class="hero-section">
+            <div class="logo-container">
+                <h1 class="main-logo">MaTrX</h1>
+                <div class="social-icons">
+                    <!-- تيليجرام -->
+                    <a href="https://t.me/ssfe2" target="_blank" class="social-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                        </svg>
+                    </a>
+                    <!-- انستغرام -->
+                    <a href="https://instagram.com/the.sszs" target="_blank" class="social-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
                 </div>
-                <div class="player-content">
+            </div>
+        </div>
+
+        <!-- مشغل الصوت -->
+        <div class="music-player" id="musicPlayer">
+            <div class="player-info">
+                <div class="album-art-container">
+                    <img src="https://b.top4top.io/p_3680guuby1.jpg" alt="Album Art" class="album-art" id="albumArt">
+                </div>
+                <div class="song-details">
                     <div class="song-title">My Song</div>
-                    <div class="progress-container">
-                        <span class="time" id="currentTime">0:00</span>
-                        <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
-                        <span class="time" id="duration">0:00</span>
-                    </div>
-                    <div class="controls">
-                        <button class="control-btn" id="rewindBtn" title="ترجيع"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/></svg></button>
-                        <button class="control-btn play-btn" id="playBtn" title="تشغيل">
-                            <svg viewBox="0 0 24 24" fill="currentColor" id="playIcon"><path d="M8 5v14l11-7z"/></svg>
-                            <svg viewBox="0 0 24 24" fill="currentColor" id="pauseIcon" style="display: none;"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                        </button>
-                        <button class="control-btn" id="forwardBtn" title="تقديم"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/></svg></button>
-                    </div>
+                    <div class="song-artist">MaTrX</div>
                 </div>
             </div>
-            <audio id="audio" preload="metadata">
-                <source src="https://l.top4top.io/m_3680vrhsi0.m4a" type="audio/mp4">
-            </audio>
-        </section>
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar" onclick="seekAudio(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="time-display">
+                    <span id="currentTime">0:00</span>
+                    <span id="duration">0:00</span>
+                </div>
+            </div>
+            <div class="player-controls">
+                <button class="control-btn" onclick="skipBackward()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z"/>
+                    </svg>
+                </button>
+                <button class="control-btn play-btn" id="playBtn" onclick="togglePlay()">
+                    <svg id="playIcon" viewBox="0 0 24 24">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                    <svg id="pauseIcon" style="display:none" viewBox="0 0 24 24">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+                    </svg>
+                </button>
+                <button class="control-btn" onclick="skipForward()">
+                    <svg viewBox="0 0 24 24">
+                        <path d="M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
 
-        <!-- Bots Section -->
-        <section class="bots-section">
+        <audio id="audioPlayer" src="https://l.top4top.io/m_3680vrhsi0.m4a" preload="metadata"></audio>
+
+        <!-- قسم البوتات -->
+        <div class="bots-section">
             <h2 class="section-title">قائمة البوتات</h2>
             <div class="bots-grid">
-                <!-- Bot Item -->
-                <a href="https://t.me/Eawubot" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت ميوزك</span>
+                <!-- بوت ميوزك -->
+                <a href="https://t.me/Eawubot" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت ميوزك</div>
+                        <div class="bot-desc">تحميل وتشغيل الموسيقى</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
-                <!-- Bot Item -->
-                <a href="https://t.me/rzkdbot" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت قراءة الكتب وتحميلها</span>
+
+                <!-- بوت الكتب -->
+                <a href="https://t.me/rzkdbot" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت الكتب</div>
+                        <div class="bot-desc">قراءة وتحميل الكتب</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
-                <!-- Bot Item -->
-                <a href="https://t.me/Mu7wbot" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت حذف المحتوى الإباحي</span>
+
+                <!-- بوت الحماية -->
+                <a href="https://t.me/Mu7wbot" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت الحماية</div>
+                        <div class="bot-desc">حذف المحتوى المخالف</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
-                <!-- Bot Item -->
-                <a href="https://t.me/Sonegbot" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت تغيير اسم وصورة الأغنية</span>
+
+                <!-- بوت تعديل الأغاني -->
+                <a href="https://t.me/Sonegbot" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت تعديل الأغاني</div>
+                        <div class="bot-desc">تغيير اسم وصورة الأغنية</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
-                <!-- Bot Item -->
-                <a href="https://t.me/JoDsubot" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت حفظ المنشورات المقيدة</span>
+
+                <!-- بوت حفظ المنشورات -->
+                <a href="https://t.me/JoDsubot" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M17 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت حفظ المنشورات</div>
+                        <div class="bot-desc">حفظ المنشورات المقيدة</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
-                <!-- Bot Item -->
-                <a href="https://t.me/vxbbbot" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت إدارة المشرفين</span>
+
+                <!-- بوت إدارة المشرفين -->
+                <a href="https://t.me/vxbbbot" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت إدارة المشرفين</div>
+                        <div class="bot-desc">إدارة صلاحيات المشرفين</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
-                <!-- Bot Item -->
-                <a href="https://t.me/tahmei_bot" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت تحميل من جميع المواقع</span>
+
+                <!-- بوت التحميل -->
+                <a href="https://t.me/tahmei_bot" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت التحميل الشامل</div>
+                        <div class="bot-desc">تحميل من جميع المواقع</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
-                <!-- Bot Item -->
-                <a href="https://t.me/Szkdbot" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت التعرف على الأغاني</span>
+
+                <!-- بوت التعرف على الأغاني -->
+                <a href="https://t.me/Szkdbot" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M12 3v9.28c-.47-.17-.97-.28-1.5-.28C8.01 12 6 14.01 6 16.5S8.01 21 10.5 21c2.31 0 4.2-1.75 4.45-4H15V6h4V3h-7z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت التعرف على الأغاني</div>
+                        <div class="bot-desc">معرفة اسم أي أغنية</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
-                <!-- Bot Item -->
-                <a href="https://t.me/XSSFE2BOT" target="_blank" class="bot-btn">
-                    <div class="bot-icon"><svg viewBox="0 0 24 24"><use xlink:href="#path-telegram"/></svg></div>
-                    <span class="bot-name">بوت مصنع بوتات</span>
+
+                <!-- بوت مصنع البوتات -->
+                <a href="https://t.me/XSSFE2BOT" target="_blank" class="bot-card">
+                    <div class="bot-icon">
+                        <svg viewBox="0 0 24 24" fill="url(#goldGradient)">
+                            <path d="M22.7 19l-9.1-9.1c.9-2.3.4-5-1.5-6.9-2-2-5-2.4-7.4-1.3L9 6 6 9 1.6 4.7C.4 7.1.9 10.1 2.9 12.1c1.9 1.9 4.6 2.4 6.9 1.5l9.1 9.1c.4.4 1 .4 1.4 0l2.3-2.3c.5-.4.5-1.1.1-1.4z"/>
+                        </svg>
+                    </div>
+                    <div class="bot-info">
+                        <div class="bot-name">بوت مصنع البوتات</div>
+                        <div class="bot-desc">إنشاء بوتات مخصصة</div>
+                    </div>
+                    <div class="bot-telegram">
+                        <svg viewBox="0 0 24 24"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
                 </a>
             </div>
-        </section>
+        </div>
+
+        <!-- التذييل -->
+        <div class="footer">
+            <p class="footer-text">MaTrX - عالم الإبداع والتقنية</p>
+        </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Elements
-            const bgVideo = document.getElementById('bgVideo');
-            const audio = document.getElementById('audio');
-            const playBtn = document.getElementById('playBtn');
-            const playIcon = document.getElementById('playIcon');
-            const pauseIcon = document.getElementById('pauseIcon');
-            const rewindBtn = document.getElementById('rewindBtn');
-            const forwardBtn = document.getElementById('forwardBtn');
-            const progressBar = document.getElementById('progressBar');
-            const progressFill =
+        // متغيرات
+        const bgVideo = document.getElementById('bgVideo');
+        const audioPlayer = document.getElementById('audioPlayer');
+        const albumArt = document.getElementById('albumArt');
+        const progressFill = document.getElementById('progressFill');
+        const progressBar = document.getElementById('progressBar');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const soundOn = document.getElementById('soundOn');
+        const soundOff = document.getElementById('soundOff');
+
+        let isPlaying = false;
+        let videoMuted = false;
+        let wasVideoMuted = false;
+
+        // دخول الموقع
+        function enterSite() {
+            document.getElementById('introScreen').classList.add('hidden');
+            document.getElementById('mainSite').classList.add('active');
+            bgVideo.muted = false;
+            bgVideo.play().catch(e => {
+                bgVideo.muted = true;
+                bgVideo.play();
+            });
+        }
+
+        // تبديل صوت الفيديو
+        function toggleVideoSound() {
+            videoMuted = !videoMuted;
+            bgVideo.muted = videoMuted;
+            soundOn.style.display = videoMuted ? 'none' : 'block';
+            soundOff.style.display = videoMuted ? 'block' : 'none';
+        }
+
+        // تشغيل/إيقاف الأغنية
+        function togglePlay() {
+            if (isPlaying) {
+                audioPlayer.pause();
+                albumArt.classList.remove('playing');
+                albumArt.classList.add('paused');
+                playIcon.style.display = 'block';
+                pauseIcon.style.display = 'none';
+                // إعادة صوت الفيديو
+                if (wasVideoMuted === false) {
+                    bgVideo.muted = false;
+                    soundOn.style.display = 'block';
+                    soundOff.style.display = 'none';
+                }
+            } else {
+                audioPlayer.play();
+                albumArt.classList.remove('paused');
+                albumArt.classList.add('playing');
+                playIcon.style.display = 'none';
+                pauseIcon.style.display = 'block';
+                // كتم صوت الفيديو
+                wasVideoMuted = bgVideo.muted;
+                bgVideo.muted = true;
+                soundOn.style.display = 'none';
+                soundOff.style.display = 'block';
+            }
+            isPlaying = !isPlaying;
+        }
+
+        // تقديم 10 ثواني
+        function skipForward() {
+            audioPlayer.currentTime = Math.min(audioPlayer.currentTime + 10, audioPlayer.duration);
+        }
+
+        // ترجيع 10 ثواني
+        function skipBackward() {
+            audioPlayer.currentTime = Math.max(audioPlayer.currentTime - 10, 0);
+        }
+
+        // تحديث شريط التقدم
+        audioPlayer.addEventListener('timeupdate', () => {
+            const progress = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+            progressFill.style.width = progress + '%';
+            currentTimeEl.textContent = formatTime(audioPlayer.currentTime);
+        });
+
+        // تحميل المدة
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            durationEl.textContent = formatTime(audioPlayer.duration);
+        });
+
+        // انتهاء الأغنية
+        audioPlayer.addEventListener('ended', () => {
+            isPlaying = false;
+            albumArt.classList.remove('playing');
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+            progressFill.style.width = '0%';
+            // إعادة صوت الفيديو
+            if (wasVideoMuted === false) {
+                bgVideo.muted = false;
+                soundOn.style.display = 'block';
+                soundOff.style.display = 'none';
+            }
+        });
+
+        // السحب في شريط التقدم
+        function seekAudio(e) {
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (e.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        }
+
+        // دعم السحب المستمر
+        let isDragging = false;
+        progressBar.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            seekAudio(e);
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                seekAudio(e);
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // دعم اللمس للجوال
+        progressBar.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const rect = progressBar.getBoundingClientRect();
+            const percent = (touch.clientX - rect.left) / rect.width;
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        });
+
+        progressBar.addEventListener('touchmove', (e) => {
+            const touch = e.touches[0];
+            const rect = progressBar.getBoundingClientRect();
+            const percent = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+            audioPlayer.currentTime = percent * audioPlayer.duration;
+        });
+
+        // تنسيق الوقت
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return mins + ':' + (secs < 10 ? '0' : '') + secs;
+        }
+    </script>
+</body>
+</html> 
