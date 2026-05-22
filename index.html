@@ -1,244 +1,542 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile Card | زهراء</title>
-    <!-- Tailwind CSS CDN -->
+    <title>زهـراء | Profile</title>
+
+    <!-- Tailwind -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
-    
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+    <!-- Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&family=Cairo:wght@700&display=swap"
+        rel="stylesheet">
+
     <style>
         :root {
-            --primary-red: #e11d48;
-            --dark-bg: #0a0a0a;
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --primary: #e11d48;
+            --dark: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Tajawal', sans-serif;
-            background-color: var(--dark-bg);
+            margin: 0;
+            height: 100vh;
             overflow: hidden;
+            font-family: 'Tajawal', sans-serif;
+            background: #000;
             display: flex;
             align-items: center;
             justify-content: center;
-            height: 100vh;
-            margin: 0;
         }
 
-        .background-animated {
+        /* الخلفية */
+
+        .bg {
             position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
+            inset: 0;
+            overflow: hidden;
             z-index: -1;
-            background: radial-gradient(circle at 50% 50%, #300, #000);
+            background:
+                radial-gradient(circle at top right, #460014, transparent 40%),
+                radial-gradient(circle at bottom left, #29000d, transparent 40%),
+                #000;
         }
 
-        .blur-circle {
+        .blur {
             position: absolute;
-            width: 600px; height: 600px;
-            background: var(--primary-red);
-            filter: blur(120px);
+            width: 600px;
+            height: 600px;
             border-radius: 50%;
+            background: #e11d48;
+            filter: blur(140px);
             opacity: 0.15;
-            animation: move 20s infinite alternate;
+            animation: move 12s infinite alternate ease-in-out;
         }
 
-        @keyframes move { from { transform: translate(-20%, -20%); } to { transform: translate(20%, 20%); } }
+        .blur:nth-child(2) {
+            right: -100px;
+            bottom: -100px;
+            animation-delay: 2s;
+        }
 
-        .phone-container {
-            width: 100%; max-width: 420px;
-            height: 90vh; max-height: 850px;
-            background: rgba(10, 10, 10, 0.8);
+        @keyframes move {
+            from {
+                transform: translate(-50px, -50px);
+            }
+
+            to {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        /* البطاقة */
+
+        .phone {
+            width: 100%;
+            max-width: 420px;
+            height: 92vh;
+            background: rgba(15, 15, 15, 0.75);
             backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
+            border: 1px solid var(--border);
             border-radius: 40px;
-            display: flex;
-            flex-direction: column;
-            padding: 30px;
-            color: white;
-            animation: fadeIn 1.2s ease-out;
+            padding: 25px;
             overflow-y: auto;
-            scrollbar-width: none;
+            color: white;
+            box-shadow:
+                0 0 40px rgba(225, 29, 72, 0.15),
+                0 20px 60px rgba(0, 0, 0, 0.6);
+            animation: fade .8s ease;
         }
 
-        .phone-container::-webkit-scrollbar { display: none; }
+        .phone::-webkit-scrollbar {
+            display: none;
+        }
 
-        .profile-img-main {
-            width: 140px; height: 140px;
+        @keyframes fade {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* الصور */
+
+        .main-img {
+            width: 160px;
+            height: 160px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--glass-border);
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            transition: .4s;
         }
 
-        .small-gallery-img {
-            width: 100px; height: 100px;
-            border-radius: 20px;
+        .main-img:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        .side-img {
+            width: 90px;
+            height: 90px;
+            border-radius: 22px;
             object-fit: cover;
-            border: 2px solid var(--glass-border);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .name-title {
-            font-size: 2rem;
-            color: white;
-            margin: 10px 0;
-            font-weight: 700;
+        .gallery {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: .3s;
+            border: 2px solid rgba(255,255,255,0.08);
         }
 
-        .social-link {
+        .gallery:hover {
+            transform: scale(1.08);
+            border-color: var(--primary);
+        }
+
+        /* النصوص */
+
+        .title {
+            font-size: 34px;
+            font-family: 'Cairo', sans-serif;
+            margin-bottom: 10px;
+        }
+
+        .bio {
+            opacity: .75;
+            line-height: 2;
+            font-size: 13px;
+        }
+
+        .details {
+            color: #ddd;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        /* السوشال */
+
+        .social {
             display: flex;
             align-items: center;
-            gap: 15px;
-            padding: 12px;
-            border-radius: 15px;
-            background: var(--glass-bg);
-            transition: all 0.3s ease;
+            gap: 16px;
+            padding: 16px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid transparent;
             text-decoration: none;
             color: white;
+            margin-bottom: 15px;
+            transition: .3s;
         }
 
-        /* Music Player Styles */
-        .music-player {
-            background: rgba(255, 255, 255, 0.07);
-            border-radius: 25px;
-            padding: 15px;
-            margin: 20px 0;
-            border: 1px solid var(--glass-border);
+        .social:hover {
+            transform: translateX(-5px);
+            border-color: rgba(225, 29, 72, 0.4);
+            background: rgba(225, 29, 72, 0.08);
         }
 
-        .music-img {
-            width: 60px; height: 60px;
-            border-radius: 50%;
+        .social i {
+            font-size: 24px;
+        }
+
+        /* المشغل */
+
+        .player {
+            margin-top: 25px;
+            background: rgba(255,255,255,0.04);
+            border-radius: 28px;
+            padding: 25px;
+            border: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .cover {
+            width: 140px;
+            height: 140px;
             object-fit: cover;
-            border: 2px solid var(--primary-red);
+            border-radius: 50%;
+            margin: auto;
+            display: block;
+            transition: .4s;
         }
 
-        .rotating { animation: rotate 5s linear infinite; }
-        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .cover.playing {
+            animation: spin 6s linear infinite;
+        }
 
-        .progress-bar {
-            width: 100%; height: 4px;
-            background: #333;
-            border-radius: 2px;
-            margin-top: 10px;
+        @keyframes spin {
+            from {
+                transform: rotate(0);
+            }
+
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .music-title {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .music-sub {
+            text-align: center;
+            opacity: .6;
+            font-size: 12px;
+        }
+
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.08);
+            margin-top: 20px;
             cursor: pointer;
         }
 
-        #progress {
-            width: 0%; height: 100%;
-            background: var(--primary-red);
-            border-radius: 2px;
-            position: relative;
+        .progress {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+        }
+
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .controls button {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.06);
+            color: white;
+            cursor: pointer;
+            font-size: 18px;
+            transition: .3s;
+        }
+
+        .controls button:hover {
+            transform: scale(1.1);
+            background: var(--primary);
+        }
+
+        .footer {
+            margin-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            opacity: .6;
+        }
+
+        .footer a {
+            color: inherit;
+            text-decoration: none;
         }
     </style>
 </head>
+
 <body>
 
-    <div class="background-animated">
-        <div class="blur-circle"></div>
+    <div class="bg">
+        <div class="blur"></div>
+        <div class="blur"></div>
     </div>
 
-    <div class="phone-container">
-        
-        <!-- القسم العلوي -->
-        <div class="flex justify-between items-center mb-6">
-            <img src="https://j.top4top.io/p_379472txi1.jpg" alt="Profile" class="profile-img-main">
+    <div class="phone">
+
+        <!-- الأعلى -->
+
+        <div class="flex justify-between items-start mb-6">
+
+            <img
+                src="https://j.top4top.io/p_379472txi1.jpg"
+                class="main-img">
+
             <div class="text-right">
-                <span class="text-2xl font-bold text-rose-500 block">زهراء</span>
+                <div class="details">زهراء</div>
+
+                <img
+                    src="https://j.top4top.io/p_379472txi1.jpg"
+                    class="side-img">
             </div>
+
         </div>
 
         <!-- النبذة -->
-        <div class="mb-6">
-            <h1 class="name-title">نُبذة عني</h1>
-            <p class="text-sm leading-relaxed opacity-90 text-justify">
+
+        <div class="mb-7">
+
+            <div class="title">نُبذة عني</div>
+
+            <div class="bio">
                 أنا تلك الفتاة التي لا تُشبه أحدًا أمتلك من الكبرياء ما يكفي لأحفظ كرامتي ومن الثقة ما يجعلني أبتسم حتى في أصعب اللحظات لست كاملة لكنني أعرف جيدًا كيف أكون استثنائية بطريقتي الخاصة لا أنتظر إعجاب أحد ولا أبحث عن مكان بين الآخرين فأنا حيث أكون يلفت حضوري الانتباه دون أن أتكلّف ذلك
-            </p>
-        </div>
-
-        <!-- المعرض -->
-        <div class="flex justify-center gap-4 mb-6">
-            <img class="small-gallery-img" src="https://c.top4top.io/p_3794ugt0d1.jpg">
-            <img class="small-gallery-img" src="https://g.top4top.io/p_37940byzk1.jpg">
-        </div>
-
-        <!-- مشغل الموسيقى -->
-        <div class="music-player">
-            <div class="flex items-center gap-4">
-                <img id="trackArt" src="https://l.top4top.io/p_3794cvxkg1.jpg" class="music-img" alt="Song Art">
-                <div class="flex-1">
-                    <p class="text-xs font-bold truncate">العمر ضايع</p>
-                    <div class="flex gap-4 mt-2 items-center justify-center">
-                        <button onclick="rewind()"><i class="fas fa-backward text-sm"></i></button>
-                        <button onclick="togglePlay()" id="playBtn" class="bg-white text-black w-8 h-8 rounded-full flex items-center justify-center">
-                            <i class="fas fa-play text-xs"></i>
-                        </button>
-                        <button onclick="forward()"><i class="fas fa-forward text-sm"></i></button>
-                    </div>
-                </div>
             </div>
-            <div class="progress-container mt-2">
-                <div class="progress-bar" id="progressBar">
-                    <div id="progress"></div>
-                </div>
+
+        </div>
+
+        <!-- الصور -->
+
+        <div class="flex justify-center gap-6 mb-8">
+
+            <img
+                src="https://c.top4top.io/p_3794ugt0d1.jpg"
+                class="gallery">
+
+            <img
+                src="https://g.top4top.io/p_37940byzk1.jpg"
+                class="gallery">
+
+        </div>
+
+        <!-- السوشال -->
+
+        <a
+            href="https://www.instagram.com/iiahsi?igsh=dHZvbXNuZXE5ZTUx"
+            target="_blank"
+            class="social">
+
+            <i class="fab fa-instagram"></i>
+
+            <div>
+                <div>Instagram</div>
+                <small>@iiahsi</small>
             </div>
-            <audio id="mainAudio" src="https://e.top4top.io/m_3794yxj3y1.m4a"></audio>
+
+        </a>
+
+        <a
+            href="https://www.snapchat.com/add/iiahsi?share_id=VRLl0xSyLE8&locale=ar-IQ-u-nu-latn"
+            target="_blank"
+            class="social">
+
+            <i class="fab fa-snapchat"></i>
+
+            <div>
+                <div>Snapchat</div>
+                <small>@iiahsi</small>
+            </div>
+
+        </a>
+
+        <!-- المشغل -->
+
+        <div class="player">
+
+            <img
+                src="https://l.top4top.io/p_3794cvxkg1.jpg"
+                class="cover"
+                id="cover">
+
+            <div class="music-title">Now Playing</div>
+
+            <div class="music-sub">Spotify Style Player</div>
+
+            <!-- الملف الصوتي -->
+
+            <audio id="audio">
+                <source
+                    src="https://e.top4top.io/m_3794yxj3y1.m4a"
+                    type="audio/mp4">
+            </audio>
+
+            <!-- التقدم -->
+
+            <div
+                class="progress-container"
+                id="progressContainer">
+
+                <div
+                    class="progress"
+                    id="progress">
+                </div>
+
+            </div>
+
+            <!-- التحكم -->
+
+            <div class="controls">
+
+                <button id="prev">
+                    <i class="fas fa-backward"></i>
+                </button>
+
+                <button id="play">
+                    <i class="fas fa-play"></i>
+                </button>
+
+                <button id="next">
+                    <i class="fas fa-forward"></i>
+                </button>
+
+            </div>
+
         </div>
 
-        <!-- التواصل الاجتماعي -->
-        <div class="space-y-3">
-            <a href="https://www.instagram.com/iiahsi" target="_blank" class="social-link">
-                <i class="fab fa-instagram text-xl text-rose-500"></i>
-                <span class="text-xs font-bold">Instagram</span>
-            </a>
-            <a href="https://www.snapchat.com/add/iiahsi" target="_blank" class="social-link">
-                <i class="fab fa-snapchat text-xl text-yellow-400"></i>
-                <span class="text-xs font-bold">Snapchat</span>
-            </a>
-        </div>
+        <!-- التذييل -->
 
-        <div class="mt-auto pt-4 text-center opacity-30 text-[10px] tracking-widest">
-            ZAHRAA PROFILE © 2026
+        <div class="footer">
+
+            <a href="#">ABOUT</a>
+
+            <a href="#">زهـراء</a>
+
+            <a href="#">SHARE</a>
+
         </div>
 
     </div>
 
     <script>
-        const audio = document.getElementById('mainAudio');
-        const playBtn = document.getElementById('playBtn');
-        const trackArt = document.getElementById('trackArt');
-        const progress = document.getElementById('progress');
-        const progressBar = document.getElementById('progressBar');
 
-        function togglePlay() {
-            if (audio.paused) {
-                audio.play();
-                playBtn.innerHTML = '<i class="fas fa-pause text-xs"></i>';
-                trackArt.classList.add('rotating');
-            } else {
+        const audio = document.getElementById("audio");
+        const playBtn = document.getElementById("play");
+        const progress = document.getElementById("progress");
+        const progressContainer = document.getElementById("progressContainer");
+        const cover = document.getElementById("cover");
+
+        let playing = false;
+
+        // تشغيل وإيقاف
+
+        playBtn.addEventListener("click", () => {
+
+            if (playing) {
+
                 audio.pause();
-                playBtn.innerHTML = '<i class="fas fa-play text-xs"></i>';
-                trackArt.classList.remove('rotating');
+
+                playBtn.innerHTML =
+                    '<i class="fas fa-play"></i>';
+
+                cover.classList.remove("playing");
+
+            } else {
+
+                audio.play();
+
+                playBtn.innerHTML =
+                    '<i class="fas fa-pause"></i>';
+
+                cover.classList.add("playing");
+
             }
-        }
 
-        audio.ontimeupdate = () => {
-            const perc = (audio.currentTime / audio.duration) * 100;
-            progress.style.width = perc + '%';
-        };
+            playing = !playing;
 
-        progressBar.onclick = (e) => {
-            const width = progressBar.clientWidth;
+        });
+
+        // تحديث التقدم
+
+        audio.addEventListener("timeupdate", () => {
+
+            const percent =
+                (audio.currentTime / audio.duration) * 100;
+
+            progress.style.width = percent + "%";
+
+        });
+
+        // التحكم بالشريط
+
+        progressContainer.addEventListener("click", (e) => {
+
+            const width = progressContainer.clientWidth;
+
             const clickX = e.offsetX;
-            audio.currentTime = (clickX / width) * audio.duration;
-        };
 
-        function forward() { audio.currentTime += 5; }
-        function rewind() { audio.currentTime -= 5; }
+            const duration = audio.duration;
+
+            audio.currentTime =
+                (clickX / width) * duration;
+
+        });
+
+        // التالي
+
+        document.getElementById("next")
+            .addEventListener("click", () => {
+
+                audio.currentTime += 10;
+
+            });
+
+        // السابق
+
+        document.getElementById("prev")
+            .addEventListener("click", () => {
+
+                audio.currentTime -= 10;
+
+            });
+
     </script>
+
 </body>
+
 </html>
