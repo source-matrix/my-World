@@ -1,110 +1,247 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MaTrX - Terminal</title>
-  
-  <!-- ===== GOOGLE FONTS ===== -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Tajawal:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <style>
-    /* ===== CSS RESET & BASE ===== */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Card | زهراء</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #e11d48;
+            --dark-bg: #0a0a0a;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+        }
 
-    :root {
-      --bg-dark: #0a0a0a;
-      --bg-card: #1a1a2e;
-      --green-main: #00ff41;
-      --green-dim: #00cc33;
-      --green-dark: #003300;
-      --green-glow: rgba(0, 255, 65, 0.3);
-      --border-light: #2a2a4a;
-      --border-pixel: #3a3a5a;
-      --text-main: #00ff41;
-      --text-dim: #00aa2a;
-      --text-white: #d0d0d0;
-      --mc-brown: #8B6914;
-      --mc-brown-light: #a0822a;
-      --mc-brown-dark: #5a4510;
-      --mc-stone: #7f7f7f;
-      --mc-stone-light: #9a9a9a;
-      --mc-stone-dark: #555555;
-      --progress-bg: #333;
-      --progress-fill: #ff0000;
-    }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--dark-bg);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
 
-    html {
-      font-size: 16px;
-      scroll-behavior: smooth;
-    }
+        .background-animated {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #300, #000);
+        }
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
-      font-family: 'IBM Plex Mono', 'Courier New', monospace;
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
-    }
+        .blur-circle {
+            position: absolute;
+            width: 600px; height: 600px;
+            background: var(--primary-red);
+            filter: blur(120px);
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: move 20s infinite alternate;
+        }
 
-    /* ===== SCANLINE OVERLAY ===== */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 255, 65, 0.015) 2px,
-        rgba(0, 255, 65, 0.015) 4px
-      );
-      pointer-events: none;
-      z-index: 9999;
-    }
+        @keyframes move { from { transform: translate(-20%, -20%); } to { transform: translate(20%, 20%); } }
 
-    /* ===== GRID BACKGROUND ===== */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background-image:
-        linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px);
-      background-size: 32px 32px;
-      pointer-events: none;
-      z-index: 0;
-    }
+        .phone-container {
+            width: 100%; max-width: 420px;
+            height: 90vh; max-height: 850px;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            display: flex;
+            flex-direction: column;
+            padding: 30px;
+            color: white;
+            animation: fadeIn 1.2s ease-out;
+            overflow-y: auto;
+            scrollbar-width: none;
+        }
 
-    /* ===== MAIN CONTAINER ===== */
-    .main-container {
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 20px 16px 40px;
-      position: relative;
-      z-index: 1;
-    }
+        .phone-container::-webkit-scrollbar { display: none; }
 
-    /* ===== ENTRY ANIMATIONS ===== */
-    @keyframes fadeSlideIn {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+        .profile-img-main {
+            width: 140px; height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--glass-border);
+        }
+
+        .small-gallery-img {
+            width: 100px; height: 100px;
+            border-radius: 20px;
+            object-fit: cover;
+            border: 2px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+
+        .name-title {
+            font-size: 2rem;
+            color: white;
+            margin: 10px 0;
+            font-weight: 700;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 12px;
+            border-radius: 15px;
+            background: var(--glass-bg);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: white;
+        }
+
+        /* Music Player Styles */
+        .music-player {
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 25px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px solid var(--glass-border);
+        }
+
+        .music-img {
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-red);
+        }
+
+        .rotating { animation: rotate 5s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+        .progress-bar {
+            width: 100%; height: 4px;
+            background: #333;
+            border-radius: 2px;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        #progress {
+            width: 0%; height: 100%;
+            background: var(--primary-red);
+            border-radius: 2px;
+            position: relative;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="background-animated">
+        <div class="blur-circle"></div>
+    </div>
+
+    <div class="phone-container">
+        
+        <!-- القسم العلوي -->
+        <div class="flex justify-between items-center mb-6">
+            <img src="https://j.top4top.io/p_379472txi1.jpg" alt="Profile" class="profile-img-main">
+            <div class="text-right">
+                <span class="text-2xl font-bold text-rose-500 block">زهراء</span>
+            </div>
+        </div>
+
+        <!-- النبذة -->
+        <div class="mb-6">
+            <h1 class="name-title">نُبذة عني</h1>
+            <p class="text-sm leading-relaxed opacity-90 text-justify">
+                أنا تلك الفتاة التي لا تُشبه أحدًا أمتلك من الكبرياء ما يكفي لأحفظ كرامتي ومن الثقة ما يجعلني أبتسم حتى في أصعب اللحظات لست كاملة لكنني أعرف جيدًا كيف أكون استثنائية بطريقتي الخاصة لا أنتظر إعجاب أحد ولا أبحث عن مكان بين الآخرين فأنا حيث أكون يلفت حضوري الانتباه دون أن أتكلّف ذلك
+            </p>
+        </div>
+
+        <!-- المعرض -->
+        <div class="flex justify-center gap-4 mb-6">
+            <img class="small-gallery-img" src="https://c.top4top.io/p_3794ugt0d1.jpg">
+            <img class="small-gallery-img" src="https://g.top4top.io/p_37940byzk1.jpg">
+        </div>
+
+        <!-- مشغل الموسيقى -->
+        <div class="music-player">
+            <div class="flex items-center gap-4">
+                <img id="trackArt" src="https://l.top4top.io/p_3794cvxkg1.jpg" class="music-img" alt="Song Art">
+                <div class="flex-1">
+                    <p class="text-xs font-bold truncate">العمر ضايع</p>
+                    <div class="flex gap-4 mt-2 items-center justify-center">
+                        <button onclick="rewind()"><i class="fas fa-backward text-sm"></i></button>
+                        <button onclick="togglePlay()" id="playBtn" class="bg-white text-black w-8 h-8 rounded-full flex items-center justify-center">
+                            <i class="fas fa-play text-xs"></i>
+                        </button>
+                        <button onclick="forward()"><i class="fas fa-forward text-sm"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="progress-container mt-2">
+                <div class="progress-bar" id="progressBar">
+                    <div id="progress"></div>
+                </div>
+            </div>
+            <audio id="mainAudio" src="https://e.top4top.io/m_3794yxj3y1.m4a"></audio>
+        </div>
+
+        <!-- التواصل الاجتماعي -->
+        <div class="space-y-3">
+            <a href="https://www.instagram.com/iiahsi" target="_blank" class="social-link">
+                <i class="fab fa-instagram text-xl text-rose-500"></i>
+                <span class="text-xs font-bold">Instagram</span>
+            </a>
+            <a href="https://www.snapchat.com/add/iiahsi" target="_blank" class="social-link">
+                <i class="fab fa-snapchat text-xl text-yellow-400"></i>
+                <span class="text-xs font-bold">Snapchat</span>
+            </a>
+        </div>
+
+        <div class="mt-auto pt-4 text-center opacity-30 text-[10px] tracking-widest">
+            ZAHRAA PROFILE © 2026
+        </div>
+
+    </div>
+
+    <script>
+        const audio = document.getElementById('mainAudio');
+        const playBtn = document.getElementById('playBtn');
+        const trackArt = document.getElementById('trackArt');
+        const progress = document.getElementById('progress');
+        const progressBar = document.getElementById('progressBar');
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.innerHTML = '<i class="fas fa-pause text-xs"></i>';
+                trackArt.classList.add('rotating');
+            } else {
+                audio.pause();
+                playBtn.innerHTML = '<i class="fas fa-play text-xs"></i>';
+                trackArt.classList.remove('rotating');
+            }
+        }
+
+        audio.ontimeupdate = () => {
+            const perc = (audio.currentTime / audio.duration) * 100;
+            progress.style.width = perc + '%';
+        };
+
+        progressBar.onclick = (e) => {
+            const width = progressBar.clientWidth;
+            const clickX = e.offsetX;
+            audio.currentTime = (clickX / width) * audio.duration;
+        };
+
+        function forward() { audio.currentTime += 5; }
+        function rewind() { audio.currentTime -= 5; }
+    </script>
+</body>
+</html>
 
     @keyframes blink {
       0%, 100% { opacity: 1; }
